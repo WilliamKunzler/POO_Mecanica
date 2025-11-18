@@ -1,8 +1,14 @@
 class OrdemServico:
-    
-    def __init__(self, id_os, data_abertura, status, 
-                 descricao, valor_total, cliente, 
+
+    # Próximo ID disponível (auto-incremento simples)
+    _next_id = 1
+
+    def __init__(self, data_abertura=None, status=None, 
+                 descricao=None, valor_total=0.0, cliente=None, 
                  mecanico=None, veiculo=None):
+        # Gera ID único internamente (auto-incremento)
+        id_os = OrdemServico._next_id
+        OrdemServico._next_id += 1
         self._id_os = id_os
         self._data_abertura = data_abertura
         self._status = status
@@ -108,7 +114,7 @@ class OrdemServico:
                 self._mecanico.qtd_veiculos_atendidos += 1
     
     def exibir_resumo(self):
-        print(f"OS #{self._id_os} - {self._status}")
+        print(f"OS #{self.id_os} - {self._status}")
         print(f"Cliente: {self._cliente.nome}")
         if self._veiculo:
             print(f"Veículo: {self._veiculo.exibir_info()}")
@@ -116,3 +122,4 @@ class OrdemServico:
             print(f"Mecânico: {self._mecanico.nome}")
         print(f"Valor Total: R$ {self.__valor_total:.2f}")
         print(f"Peças utilizadas: {len(self._pecas)}")
+        print(f"Descrição: {self._descricao}")
