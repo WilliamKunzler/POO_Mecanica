@@ -264,3 +264,9 @@ Este projeto demonstra a aplicação completa e integrada com principais pilares
 - **Testes**: Conjunto completo de testes garantindo estabilidade e funcionamento correto do sistema
 
 O sistema está pronto para uso e expansão, seguindo as melhores práticas de desenvolvimento orientado a objetos.
+
+## 🫂 Desenvolvedores
+- **André Luiz Vicenzi Rigo**
+- **Kauan Lucas Toldo**
+- **William Kunzler**
+- **Yasmin Maria Zerbielli**
