@@ -132,26 +132,12 @@ atendente = Atendente("Ana Costa", 2, 2500.00, 50.00, 0)
 
 ### Criando Ordem de Serviço
 ```python
-sistema = SistemaMecanica()
-
-# Cadastrar entidades
-sistema.cadastrar_funcionario(mecanico)
-sistema.cadastrar_cliente(cliente)
-sistema.cadastrar_veiculo(veiculo, cliente.id_cliente)
-
 # Criar OS
 os = sistema.criar_ordem_servico(
     cliente.id_cliente, 
     veiculo.placa, 
     "Troca de óleo e filtros"
 )
-
-# Atribuir mecânico e adicionar peças
-sistema.atribuir_mecanico_os(os.id_os, mecanico.id)
-sistema.adicionar_peca_os(os.id_os, peca.id, 2)
-
-# Finalizar serviço
-sistema.finalizar_os(os.id_os)
 ```
 
 ## 🧪 Testes
@@ -183,18 +169,12 @@ python regras.py
    - Regras básicas de validação
    - Relacionamentos entre entidades
 
-2. **Serviços (`servicos.py`)**
-   - Lógicas de negócio complexas
-   - Operações CRUD
-   - Validações avançadas
-   - Geração de relatórios
-
-3. **Apresentação (`main.py`)**
+2. **Apresentação (`main.py`)**
    - Interface do usuário (console)
    - Demonstrações do sistema
    - Fluxos de uso
 
-4. **Testes (`regras.py`)**
+3. **Testes (`regras.py`)**
    - Validação de funcionalidades
    - Testes de integração
    - Cenários de erro
