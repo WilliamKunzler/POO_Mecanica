@@ -8,12 +8,20 @@ class Cliente:
     _next_id = 1
 
     def __init__(self, nome, veiculos=None, qtd_servicos=0, satisfacao="Não avaliado"):
+<<<<<<< HEAD
         self.nome = nome
+=======
+        self._nome = nome
+>>>>>>> 119eb9229a4820bf56153e1935d409d23608c432
         # Atribui ID automaticamente (não deve ser passado na instanciação)
         self._id_cliente = Cliente._next_id
         Cliente._next_id += 1
         self.__qtd_servicos = qtd_servicos
+<<<<<<< HEAD
         self.satisfacao = satisfacao
+=======
+        self._satisfacao = satisfacao
+>>>>>>> 119eb9229a4820bf56153e1935d409d23608c432
         # Permite associar veículos já na instanciação (lista)
         self._veiculos = list(veiculos) if veiculos else []  # Agregação - cliente pode ter múltiplos veículos
     
