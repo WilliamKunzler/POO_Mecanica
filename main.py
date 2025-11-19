@@ -30,7 +30,6 @@ def fluxo_cliente():
     linha("-")
     # Criar peça: óleo de motor com 50 unidades no estoque
     oleo_motor = Peca(
-        id_peca=1,
         nome="Óleo Motor Sintético 5W30",
         descricao="Óleo sintético premium para motores",
         qtd_estoque=50,
@@ -106,7 +105,6 @@ def fluxo_mecanico():
     
     mecanico = Mecanico(
         nome="José Vilas Boas",
-        id_funcionario=100,
         salario_base=5000.00,
         qtd_veiculos_atendidos=0,
         bonus_por_veiculo=150.00
@@ -194,7 +192,6 @@ def fluxo_mecanico():
     
     # Criando peças no estoque
     oleo_motor = Peca(
-        id_peca=1,
         nome="Óleo Motor Sintético 5W30",
         descricao="Óleo sintético premium para motores",
         qtd_estoque=50,
@@ -202,7 +199,6 @@ def fluxo_mecanico():
     )
     
     filtro_oleo = Peca(
-        id_peca=2,
         nome="Filtro de Óleo",
         descricao="Filtro de óleo original Honda",
         qtd_estoque=30,
@@ -210,7 +206,6 @@ def fluxo_mecanico():
     )
     
     filtro_ar = Peca(
-        id_peca=3,
         nome="Filtro de Ar",
         descricao="Filtro de ar esportivo",
         qtd_estoque=20,
@@ -218,7 +213,6 @@ def fluxo_mecanico():
     )
     
     filtro_combustivel = Peca(
-        id_peca=4,
         nome="Filtro de Combustível",
         descricao="Filtro de combustível original",
         qtd_estoque=15,
