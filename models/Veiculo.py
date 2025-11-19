@@ -2,7 +2,7 @@ from datetime import date
 
 class Veiculo:
     
-    def __init__(self, placa, nome_veiculo, modelo, ano_fabricacao):  
+    def __init__(self, placa, nome_veiculo, modelo, ano_fabricacao):
         self._placa = placa
         self._nome_veiculo = nome_veiculo
         self._modelo = modelo
