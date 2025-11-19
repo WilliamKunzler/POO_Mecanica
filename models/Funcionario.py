@@ -3,10 +3,15 @@ from abc import ABC, abstractmethod
 class Funcionario(ABC):
     """Classe abstrata para funcionários da mecânica."""
     
-    def __init__(self, nome, id_funcionario, salario_base):
-        self._nome = nome
-        self._id = id_funcionario
-        self.__salario_base = salario_base
+    _next_id = 1
+    
+    def __init__(self, nome, salario_base):
+
+        self.nome = nome
+        # Atribui ID automaticamente (não deve ser passado na instanciação)
+        self._id = Funcionario._next_id
+        Funcionario._next_id += 1
+        self.salario_base = salario_base
     
     @property                                                           
     def nome(self):
@@ -16,7 +21,7 @@ class Funcionario(ABC):
     @nome.setter
     def nome(self, valor):
         if not valor:
-            raise ValueError("Nome deve ser uma string não vazia")
+            return print("Nome deve ser uma string não vazia")
         self._nome = valor
     
     @property
@@ -29,8 +34,8 @@ class Funcionario(ABC):
     
     @salario_base.setter
     def salario_base(self, valor):
-        if valor <= 0:
-            raise ValueError("Salário base deve ser positivo")
+        if not valor or valor <= 0:
+            return print("Salário base deve ser positivo")
         self.__salario_base = valor
     
     @abstractmethod                                                     
@@ -41,11 +46,11 @@ class Funcionario(ABC):
 
 class Mecanico(Funcionario):
     
-    def __init__(self, nome, id_funcionario, salario_base,              
+    def __init__(self, nome, salario_base,              
                  qtd_veiculos_atendidos=0, bonus_por_veiculo=0.0):
-        super().__init__(nome, id_funcionario, salario_base)
-        self._qtd_veiculos_atendidos = qtd_veiculos_atendidos
-        self.__bonus_por_veiculo = bonus_por_veiculo
+        super().__init__(nome, salario_base)
+        self.qtd_veiculos_atendidos = qtd_veiculos_atendidos
+        self.bonus_por_veiculo = bonus_por_veiculo
     
     @property
     def qtd_veiculos_atendidos(self):                                   
@@ -56,7 +61,7 @@ class Mecanico(Funcionario):
     def qtd_veiculos_atendidos(self, valor):
         """Setter para quantidade de veículos atendidos."""
         if valor < 0:
-            raise ValueError("Quantidade de veículos não pode ser negativa")
+            return print("Quantidade de veículos não pode ser negativa")
         self._qtd_veiculos_atendidos = valor
     
     @property
@@ -66,7 +71,7 @@ class Mecanico(Funcionario):
     @bonus_por_veiculo.setter
     def bonus_por_veiculo(self, valor):
         if valor < 0:
-            raise ValueError("Bônus não pode ser negativo")
+            return print("Bônus não pode ser negativo")
         self.__bonus_por_veiculo = valor
     
     def alterar_status(self, ordem_servico, novo_status):                              
@@ -86,11 +91,11 @@ class Mecanico(Funcionario):
 
 class Atendente(Funcionario):
     
-    def __init__(self, nome, id_funcionario, salario_base, 
+    def __init__(self, nome, salario_base, 
                  comissao=0.0, qtd_clientes=0):
-        super().__init__(nome, id_funcionario, salario_base)
-        self.__comissao = comissao
-        self._qtd_clientes = qtd_clientes
+        super().__init__(nome, salario_base)
+        self.comissao = comissao
+        self.qtd_clientes = qtd_clientes
     
     @property
     def comissao(self):
@@ -99,7 +104,7 @@ class Atendente(Funcionario):
     @comissao.setter
     def comissao(self, valor):
         if valor < 0:
-            raise ValueError("Comissão não pode ser negativa")
+            return print("Comissão não pode ser negativa")
         self.__comissao = valor
     
     @property                                                           
@@ -111,7 +116,7 @@ class Atendente(Funcionario):
     def qtd_clientes(self, valor):
         """Setter para quantidade de clientes."""
         if valor < 0:
-            raise ValueError("Quantidade de clientes não pode ser negativa")
+            return print("Quantidade de clientes não pode ser negativa")
         self._qtd_clientes = valor
     
     def gerenciar_cliente(self, acao, cliente):                         

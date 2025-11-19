@@ -1,13 +1,15 @@
 class Peca:
     
-    def __init__(self, id_peca, nome, descricao, 
+    _next_id = 1  # Atributo de classe para controle de IDs automáticos
+    def __init__(self, nome, descricao, 
                  qtd_estoque, valor_unit):
-        self._id = id_peca
-        self._nome = nome
-        self._descricao = descricao
-        self.__qtd_estoque = qtd_estoque
-        self.__valor_unit = valor_unit
-    
+        # Atribui ID automaticamente (não deve ser passado na instanciação)
+        self._id = Peca._next_id
+        Peca._next_id += 1
+        self.nome = nome
+        self.descricao = descricao
+        self.qtd_estoque = qtd_estoque
+        self.valor_unit = valor_unit
     @property                                                         
     def id(self):
         """Getter para ID da peça."""
@@ -22,7 +24,7 @@ class Peca:
     def nome(self, valor):
         """Setter para nome da peça."""
         if not valor:
-            raise ValueError("Nome deve ser uma string não vazia")
+            return print("Nome deve ser uma string não vazia")
         self._nome = valor
     
     @property                                                        
@@ -42,7 +44,7 @@ class Peca:
     @qtd_estoque.setter
     def qtd_estoque(self, valor):
         if valor < 0:
-            raise ValueError("Quantidade em estoque não pode ser negativa")
+            return print("Quantidade em estoque não pode ser negativa")
         self.__qtd_estoque = valor
     
     @property
@@ -52,7 +54,7 @@ class Peca:
     @valor_unit.setter
     def valor_unit(self, valor):
         if valor <= 0:
-            raise ValueError("Valor unitário deve ser positivo")
+            return print("Valor unitário deve ser positivo")
         self.__valor_unit = valor
     
     def adicionar_peca(self, qtd):

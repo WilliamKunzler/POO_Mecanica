@@ -17,8 +17,10 @@ class Veiculo:
     def placa(self, valor):
         """Setter para placa do veículo."""
         if not valor or len(valor) < 7:
-            return print("Placa deve ter formato válido")
-        self._placa = valor
+            print("Placa deve ter formato válido")
+            self._placa = "INVALIDA"  # Define um valor padrão
+        else:
+            self._placa = valor
     
     @property                                                       
     def nome_veiculo(self):
@@ -29,8 +31,10 @@ class Veiculo:
     def nome_veiculo(self, valor):
         """Setter para nome do veículo."""
         if not valor:
-            return print("Nome do veículo não pode ser vazio")
-        self._nome_veiculo = valor
+            print("Nome do veículo não pode ser vazio")
+            self._nome_veiculo = "Nome Inválido"  # Define um valor padrão
+        else:
+            self._nome_veiculo = valor
     
     @property                                                       
     def modelo(self):
@@ -51,8 +55,10 @@ class Veiculo:
     def ano_fabricacao(self, valor):
         """Setter para ano de fabricação."""
         if valor < 1900 or valor > 2025:
-            return print("Ano de fabricação inválido")
-        self._ano_fabricacao = valor
+            print("Ano de fabricação inválido")
+            self._ano_fabricacao = 2000  # Define um valor padrão
+        else:
+            self._ano_fabricacao = valor
     
     def exibir_info(self):                                                
         """Retorna informações do veículo."""
