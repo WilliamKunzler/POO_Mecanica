@@ -217,8 +217,7 @@ O arquivo `main.py` inclui demonstrações completas de:
 - Validação de tipos de dados
 
 ### Clientes
-- Nome com mínimo de 2 caracteres
-- ID único no sistema
+- Não é permitido nome vazio
 - Satisfação deve estar na lista de valores válidos
 
 ### Veículos
