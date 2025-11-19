@@ -9,7 +9,7 @@ class Funcionario(ABC):
 
         self.nome = nome
         # Atribui ID automaticamente (não deve ser passado na instanciação)
-        self.id = Funcionario._next_id
+        self._id = Funcionario._next_id
         Funcionario._next_id += 1
         self.salario_base = salario_base
     
@@ -34,7 +34,7 @@ class Funcionario(ABC):
     
     @salario_base.setter
     def salario_base(self, valor):
-        if valor <= 0:
+        if not valor or valor <= 0:
             return print("Salário base deve ser positivo")
         self.__salario_base = valor
     
@@ -48,14 +48,9 @@ class Mecanico(Funcionario):
     
     def __init__(self, nome, salario_base,              
                  qtd_veiculos_atendidos=0, bonus_por_veiculo=0.0):
-        if qtd_veiculos_atendidos < 0:
-            return print("Quantidade de veículos não pode ser negativa")
-        if bonus_por_veiculo < 0:
-            return print("Bônus não pode ser negativo")
-            
         super().__init__(nome, salario_base)
-        self._qtd_veiculos_atendidos = qtd_veiculos_atendidos
-        self.__bonus_por_veiculo = bonus_por_veiculo
+        self.qtd_veiculos_atendidos = qtd_veiculos_atendidos
+        self.bonus_por_veiculo = bonus_por_veiculo
     
     @property
     def qtd_veiculos_atendidos(self):                                   
@@ -98,14 +93,9 @@ class Atendente(Funcionario):
     
     def __init__(self, nome, salario_base, 
                  comissao=0.0, qtd_clientes=0):
-        if comissao < 0:
-            return print("Comissão não pode ser negativa")
-        if qtd_clientes < 0:
-            return print("Quantidade de clientes não pode ser negativa")
-            
         super().__init__(nome, salario_base)
-        self.__comissao = comissao
-        self._qtd_clientes = qtd_clientes
+        self.comissao = comissao
+        self.qtd_clientes = qtd_clientes
     
     @property
     def comissao(self):

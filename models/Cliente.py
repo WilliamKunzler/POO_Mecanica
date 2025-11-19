@@ -8,12 +8,12 @@ class Cliente:
     _next_id = 1
 
     def __init__(self, nome, veiculos=None, qtd_servicos=0, satisfacao="Não avaliado"):
-        self._nome = nome
+        self.nome = nome
         # Atribui ID automaticamente (não deve ser passado na instanciação)
         self._id_cliente = Cliente._next_id
         Cliente._next_id += 1
-        self.__qtd_servicos = qtd_servicos
-        self._satisfacao = satisfacao
+        self.qtd_servicos = qtd_servicos
+        self.satisfacao = satisfacao
         # Permite associar veículos já na instanciação (lista)
         self._veiculos = list(veiculos) if veiculos else []  # Agregação - cliente pode ter múltiplos veículos
     
@@ -26,8 +26,10 @@ class Cliente:
     def nome(self, valor):
         """Setter para nome do cliente."""
         if not valor:
-            raise ValueError("Nome não pode ser vazio")
-        self._nome = valor
+            print("Nome não pode ser vazio")
+            self._nome = "Nome Inválido"  # Define um valor padrão
+        else:
+            self._nome = valor
     
     @property                                                         
     def id_cliente(self):
@@ -37,6 +39,13 @@ class Cliente:
     @property
     def qtd_servicos(self):
         return self.__qtd_servicos
+
+    @qtd_servicos.setter
+    def qtd_servicos(self, valor):
+        if valor < 0:
+            print("Quantidade de serviços não pode ser negativa")
+            return
+        self.__qtd_servicos = valor
     
     @property                                                        
     def satisfacao(self):
@@ -48,7 +57,8 @@ class Cliente:
         """Setter para satisfação do cliente."""
         satisfacoes_validas = ["Muito Satisfeito", "Satisfeito", "Neutro", "Insatisfeito", "Não avaliado"]
         if valor not in satisfacoes_validas:
-            raise ValueError(f"Satisfação deve ser uma das opções: {satisfacoes_validas}")
+            print(f"Satisfação deve ser uma das opções: {satisfacoes_validas}")
+            return
         self._satisfacao = valor
     
     @property                                                        
@@ -74,7 +84,7 @@ class Cliente:
         """Aprova um orçamento de serviço."""
         if ordem_servico.status == "Orçamento":
             ordem_servico.alterar_status("Aprovado")
-            return True
+            return print("Orçamento aprovado com sucesso.")
         return False
     
     def consultar_os(self, orders_list):

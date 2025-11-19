@@ -2,11 +2,11 @@ from datetime import date
 
 class Veiculo:
     
-    def __init__(self, placa, nome_veiculo, modelo, ano_fabricacao):
-        self._placa = placa
-        self._nome_veiculo = nome_veiculo
-        self._modelo = modelo
-        self._ano_fabricacao = ano_fabricacao
+    def __init__(self, placa, nome_veiculo, modelo, ano_fabricacao):  
+        self.placa = placa
+        self.nome_veiculo = nome_veiculo
+        self.modelo = modelo
+        self.ano_fabricacao = ano_fabricacao
     
     @property                                                         
     def placa(self):
@@ -17,8 +17,10 @@ class Veiculo:
     def placa(self, valor):
         """Setter para placa do veículo."""
         if not valor or len(valor) < 7:
-            raise ValueError("Placa deve ter formato válido")
-        self._placa = valor
+            print("Placa deve ter formato válido")
+            self._placa = "INVALIDA"  # Define um valor padrão
+        else:
+            self._placa = valor
     
     @property                                                       
     def nome_veiculo(self):
@@ -29,8 +31,10 @@ class Veiculo:
     def nome_veiculo(self, valor):
         """Setter para nome do veículo."""
         if not valor:
-            raise ValueError("Nome do veículo não pode ser vazio")
-        self._nome_veiculo = valor
+            print("Nome do veículo não pode ser vazio")
+            self._nome_veiculo = "Nome Inválido"  # Define um valor padrão
+        else:
+            self._nome_veiculo = valor
     
     @property                                                       
     def modelo(self):
@@ -51,8 +55,10 @@ class Veiculo:
     def ano_fabricacao(self, valor):
         """Setter para ano de fabricação."""
         if valor < 1900 or valor > 2025:
-            raise ValueError("Ano de fabricação inválido")
-        self._ano_fabricacao = valor
+            print("Ano de fabricação inválido")
+            self._ano_fabricacao = 2000  # Define um valor padrão
+        else:
+            self._ano_fabricacao = valor
     
     def exibir_info(self):                                                
         """Retorna informações do veículo."""

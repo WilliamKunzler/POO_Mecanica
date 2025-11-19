@@ -4,7 +4,7 @@ class Peca:
     def __init__(self, nome, descricao, 
                  qtd_estoque, valor_unit):
         # Atribui ID automaticamente (não deve ser passado na instanciação)
-        self.id = Peca._next_id
+        self._id = Peca._next_id
         Peca._next_id += 1
         self.nome = nome
         self.descricao = descricao

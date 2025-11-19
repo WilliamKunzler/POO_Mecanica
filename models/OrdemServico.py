@@ -12,7 +12,7 @@ class OrdemServico:
         self._id_os = id_os
         self._data_abertura = data_abertura
         self._status = status
-        self._descricao = descricao
+        self.descricao = descricao
         self.__valor_total = valor_total
         self._cliente = cliente  # Associação
         self._mecanico = mecanico  # Associação
@@ -91,7 +91,7 @@ class OrdemServico:
         if novo_status in status_validos:
             self._status = novo_status
         else:
-            raise ValueError(f"Status deve ser um dos: {status_validos}")
+            return print(f"Status deve ser um dos: {status_validos}")
     
     def atribuir_mecanico(self, mecanico):                                         
         """Atribui um mecânico à ordem de serviço."""
