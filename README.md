@@ -17,16 +17,26 @@ Ele serve como uma visão geral da arquitetura orientada a objetos, que permite 
 ## 📁 Estrutura do Projeto
 
 ```
-Mecanica/
-├── models/          # Classes do modelo 
-    ├── Cliente.py
-    ├── Funcionario.py
-    ├── OrdemServico.py
-    ├── Peca.py
-    ├── Veiculo.py
-├── main.py            # Demonstração completa do sistema
-├── regras.py          # Testes unitários e de integração
-└── README.md          # Documentação do projeto
+POO_Mecanica/
+├── models/              # Classes do modelo (domínio)
+│   ├── Cliente.py          # Classe Cliente
+│   ├── Funcionario.py      # Classes Funcionario, Mecanico e Atendente
+│   ├── OrdemServico.py     # Classe OrdemServico
+│   ├── Peca.py             # Classe Peca
+│   └── Veiculo.py          # Classe Veiculo
+├── gui/                 # Interface gráfica (Tkinter)
+│   ├── __init__.py         # Inicialização do pacote
+│   ├── login_window.py     # Tela de login
+│   ├── cliente_window.py   # Interface do cliente
+│   ├── mecanico_window.py  # Interface do mecânico
+│   └── atendente_window.py # Interface do atendente
+├── images/              # Recursos visuais
+│   └── diagrama.jpeg       # Diagrama UML do sistema
+├── app.py               # Ponto de entrada da aplicação (GUI)
+├── sistema.py           # Classe central de gerenciamento
+├── main.py              # Demonstração em console (deprecated)
+├── regras.py            # Testes unitários e de integração
+└── README.md            # Documentação do projeto
 ```
 
 ## 🔧 Conceitos de POO Implementados
@@ -77,25 +87,105 @@ def nome(self, valor: str):
 ## 🚀 Como Executar
 
 ### Pré-requisitos
-- Python 3.6 ou superior
+- Python 3.7 ou superior
+- Tkinter (geralmente já incluído no Python)
 
 ### Execução
-1. **Demonstração completa**:
+
+1. **Interface Gráfica (recomendado)**:
+```bash
+python app.py
+```
+
+2. **Demonstração em console**:
 ```bash
 python main.py
 ```
 
-2. **Executar testes**:
+3. **Executar testes**:
 ```bash
 python regras.py
 ```
+
+## 🖥️ Interface Gráfica
+
+O sistema possui uma interface gráfica completa desenvolvida com **Tkinter**, a biblioteca padrão do Python para criação de GUIs.
+
+### Características da Interface
+
+- **Design Moderno**: Interface com visual clean e profissional
+- **Tela Cheia**: Todas as janelas abrem maximizadas
+- **Código de Cores**: Cada tipo de usuário tem sua cor característica
+  - 🔵 **Cliente**: Azul (#4A90E2)
+  - 🟠 **Mecânico**: Laranja (#E67E22)
+  - 🟣 **Atendente**: Roxo (#8E44AD)
+- **Navegação por Abas**: Sistema de tabs customizado para cada interface
+- **Contadores Dinâmicos**: Estatísticas atualizadas em tempo real
+
+### Estrutura da Interface
+
+#### 1. Tela de Login (`login_window.py`)
+- Seleção do tipo de usuário (Cliente, Mecânico ou Atendente)
+- Login por nome (case-insensitive)
+- Design com card centralizado
+
+#### 2. Interface do Cliente (`cliente_window.py`)
+Funcionalidades disponíveis:
+- **Solicitar Serviço**: Criar nova ordem de serviço
+- **Aprovar Orçamento**: Aprovar orçamentos pendentes
+- **Consultar Status**: Acompanhar andamento dos serviços
+
+#### 3. Interface do Mecânico (`mecanico_window.py`)
+Funcionalidades disponíveis:
+- **Ordens de Serviço**: Visualizar OS atribuídas
+- **Alterar Status**: Atualizar status das OS (Orçamento → Aprovado → Em Andamento → Concluído)
+- **Requisitar Peças**: Solicitar peças do estoque
+
+#### 4. Interface do Atendente (`atendente_window.py`)
+Funcionalidades CRUD completas:
+- **Clientes**: Criar, editar, visualizar e remover clientes
+- **Veículos**: Gerenciar veículos dos clientes
+- **Peças**: Controlar estoque de peças
+- **Ordens de Serviço**: Criar e gerenciar OS
+
+### Guia Rápido de Uso
+
+#### Como Acessar o Sistema
+
+1. Execute `python app.py`
+2. Selecione o tipo de usuário
+3. Digite o nome do usuário (use os dados de exemplo abaixo)
+
+#### Credenciais de Exemplo
+
+Após executar `app.py`, o sistema carrega automaticamente dados de exemplo:
+
+**Clientes**:
+- Ana Maria Costa
+- Pedro Henrique Lima
+- Mariana Fernandes
+
+**Mecânicos**:
+- Roberto Silva
+- Carlos Oliveira
+
+**Atendente**:
+- Juliana Santos
+
+#### Fluxo Típico de Uso
+
+1. **Atendente** cria um novo cliente e cadastra seu veículo
+2. **Atendente** cria uma ordem de serviço e atribui a um mecânico
+3. **Mecânico** visualiza a OS, cria orçamento e altera status para "Orçamento"
+4. **Cliente** aprova o orçamento
+5. **Mecânico** executa o serviço, requisita peças e finaliza (status "Concluído")
+6. **Cliente** consulta o status e avalia o serviço
 
 ## ⚙️ Funcionalidades
 
 ### Gestão de Funcionários
 - Cadastro de mecânicos e atendentes
 - Cálculo automático de salários com bônus/comissões
-- Relatório de folha de pagamento
 
 ### Gestão de Clientes e Veículos
 - Cadastro de clientes com validações
@@ -112,12 +202,6 @@ python regras.py
 - Atribuição de mecânicos
 - Cálculo automático de valores
 - Controle de status (Aberto → Em Andamento → Concluído)
-
-### Relatórios
-- Folha de pagamento detalhada
-- Relatórios por período
-- Análise de produtividade
-- Controle de satisfação
 
 ## 💻 Exemplos de Uso
 
@@ -164,25 +248,53 @@ python regras.py
 
 ### Camadas da Aplicação
 
-1. **Modelos**
+1. **Modelos (`models/`)**
    - Definição das classes principais separadas em diferentes arquivos
    - Regras básicas de validação
    - Relacionamentos entre entidades
+   - Lógica de negócio (cálculos, validações)
 
-2. **Apresentação (`main.py`)**
-   - Interface do usuário (console)
+2. **Sistema (`sistema.py`)**
+   - Classe central `SistemaMecanica`
+   - Gerenciamento de dados (clientes, funcionários, peças, OS)
+   - Autenticação de usuários
+   - Carregamento de dados de exemplo
+
+3. **Interface Gráfica (`gui/`)**
+   - Camada de apresentação com Tkinter
+   - Janelas específicas para cada tipo de usuário
+   - Controle de navegação e interação
+   - Atualização dinâmica de contadores
+
+4. **Aplicação (`app.py`)**
+   - Ponto de entrada do sistema
+   - Inicialização da interface gráfica
+   - Configuração inicial
+
+5. **Apresentação Console (`main.py`)**
+   - Interface do usuário em console (deprecated)
    - Demonstrações do sistema
    - Fluxos de uso
 
-3. **Testes (`regras.py`)**
+6. **Testes (`regras.py`)**
    - Validação de funcionalidades
    - Testes de integração
    - Cenários de erro
 
 ## 📊 Demonstrações
 
-O arquivo `main.py` inclui demonstrações completas de:
+O sistema oferece duas formas de demonstração:
 
+### 1. Interface Gráfica (`app.py`)
+Demonstração completa e interativa com:
+- Login visual por tipo de usuário
+- Interfaces personalizadas para cada perfil
+- Operações CRUD completas
+- Navegação intuitiva por abas
+- Contadores e estatísticas em tempo real
+
+### 2. Console (`main.py`)
+Demonstrações programáticas de:
 1. **Herança e Polimorfismo**: Cálculo diferenciado de salários
 2. **Encapsulamento**: Validações com properties
 3. **Agregação e Composição**: Relacionamentos entre objetos
@@ -231,7 +343,7 @@ O arquivo `main.py` inclui demonstrações completas de:
 
 ## 📝 Conclusão
 
-Este projeto demonstra a aplicação completa e integrada com principais pilares da Programação Orientada a Objetos (POO) em Python, seguindo fielmente o diagrama UML do sistema:
+Este projeto demonstra a aplicação completa e integrada dos principais pilares da Programação Orientada a Objetos (POO) em Python, seguindo fielmente o diagrama UML do sistema:
 
 - **Herança**: Reutilização de código através da hierarquia Funcionario
 - **Polimorfismo**: Comportamentos específicos em métodos comuns
@@ -241,8 +353,9 @@ Este projeto demonstra a aplicação completa e integrada com principais pilares
 - **Modularidade**: Código organizado em módulos separados, facilitando manutenção e expansão
 - **Validações**: Regras de negócio bem definidas asseguram integridade e confiabilidade dos dados
 - **Testes**: Conjunto completo de testes garantindo estabilidade e funcionamento correto do sistema
+- **Interface Gráfica**: GUI moderna e intuitiva desenvolvida com Tkinter, proporcionando experiência de usuário profissional
 
-O sistema está pronto para uso e expansão, seguindo as melhores práticas de desenvolvimento orientado a objetos.
+O sistema está pronto para uso e expansão, seguindo as melhores práticas de desenvolvimento orientado a objetos e oferecendo tanto interface gráfica quanto programática.
 
 ## 🫂 Desenvolvedores
 - **André Luiz Vicenzi Rigo**

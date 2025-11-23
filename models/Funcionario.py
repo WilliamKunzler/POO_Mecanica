@@ -46,6 +46,21 @@ class Funcionario(ABC):
 
 class Mecanico(Funcionario):
     
+    def calcular_veiculos_atendidos(self, ordens_servico):
+        """Calcula quantos veículos foram atendidos (OS concluídas).
+        
+        Args:
+            ordens_servico (list): Lista de todas as ordens de serviço do sistema
+            
+        Returns:
+            int: Quantidade de veículos atendidos
+        """
+        count = 0
+        for os in ordens_servico:
+            if os.mecanico == self and os.status == "Concluído":
+                count += 1
+        return count
+    
     def __init__(self, nome, salario_base,              
                  qtd_veiculos_atendidos=0, bonus_por_veiculo=0.0):
         super().__init__(nome, salario_base)
@@ -91,6 +106,21 @@ class Mecanico(Funcionario):
 
 class Atendente(Funcionario):
     
+    def calcular_clientes_atendidos(self, clientes):
+        """Calcula quantos clientes foram atendidos por este atendente.
+        
+        Args:
+            clientes (list): Lista de todos os clientes do sistema
+            
+        Returns:
+            int: Quantidade de clientes atendidos
+        """
+        count = 0
+        for cliente in clientes:
+            if hasattr(cliente, 'atendente_criador') and cliente.atendente_criador == self:
+                count += 1
+        return count
+    
     def __init__(self, nome, salario_base, 
                  comissao=0.0, qtd_clientes=0):
         super().__init__(nome, salario_base)
@@ -129,7 +159,8 @@ class Atendente(Funcionario):
             novo_cliente = Cliente(
                 nome=nome,
                 qtd_servicos=qtd_servicos,
-                satisfacao=satisfacao
+                satisfacao=satisfacao,
+                atendente_criador=self
             )
             self._qtd_clientes += 1
             print(f"   Cliente {novo_cliente.nome} criado com sucesso!")

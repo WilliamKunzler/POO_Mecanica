@@ -7,13 +7,14 @@ class Cliente:
     # Próximo ID disponível para clientes (auto-incremento)
     _next_id = 1
 
-    def __init__(self, nome, veiculos=None, qtd_servicos=0, satisfacao="Não avaliado"):
+    def __init__(self, nome, veiculos=None, qtd_servicos=0, satisfacao="Não avaliado", atendente_criador=None):
         self.nome = nome
         # Atribui ID automaticamente (não deve ser passado na instanciação)
         self._id_cliente = Cliente._next_id
         Cliente._next_id += 1
         self.qtd_servicos = qtd_servicos
         self.satisfacao = satisfacao
+        self.atendente_criador = atendente_criador  # Referência ao atendente que criou
         # Permite associar veículos já na instanciação (lista)
         self._veiculos = list(veiculos) if veiculos else []  # Agregação - cliente pode ter múltiplos veículos
     
@@ -46,6 +47,21 @@ class Cliente:
             print("Quantidade de serviços não pode ser negativa")
             return
         self.__qtd_servicos = valor
+    
+    def calcular_servicos_ativos(self, ordens_servico):
+        """Calcula quantos serviços estão aprovados, em andamento ou concluídos.
+        
+        Args:
+            ordens_servico (list): Lista de todas as ordens de serviço do sistema
+            
+        Returns:
+            int: Quantidade de serviços ativos
+        """
+        count = 0
+        for os in ordens_servico:
+            if os.cliente == self and os.status in ["Aprovado", "Em Andamento", "Concluído"]:
+                count += 1
+        return count
     
     @property                                                        
     def satisfacao(self):
