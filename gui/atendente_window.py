@@ -43,7 +43,8 @@ class AtendenteWindow:
         
         tk.Label(info_frame, text=f"Atendente: {self.atendente.nome}", 
                 font=("Segoe UI", 16, "bold"), bg="#8E44AD", fg="white").pack(anchor="w")
-        self.info_label = tk.Label(info_frame, text=f"ID {self.atendente.id} | Clientes Atendidos: {self.atendente.qtd_clientes}", 
+        salario = self.atendente.calcular_salario()
+        self.info_label = tk.Label(info_frame, text=f"ID {self.atendente.id} | Clientes Atendidos: {self.atendente.qtd_clientes} | Salário: R$ {salario:,.2f}", 
                 font=("Segoe UI", 10), bg="#8E44AD", fg="white")
         self.info_label.pack(anchor="w")
         
@@ -91,7 +92,8 @@ class AtendenteWindow:
     def atualizar_header(self):
         """Atualiza as informações do header com contadores dinâmicos."""
         qtd_clientes = self.atendente.calcular_clientes_atendidos(self.sistema.clientes)
-        self.info_label.config(text=f"ID {self.atendente.id} | Clientes Atendidos: {qtd_clientes}")
+        salario = self.atendente.calcular_salario()
+        self.info_label.config(text=f"ID {self.atendente.id} | Clientes Atendidos: {qtd_clientes} | Salário: R$ {salario:,.2f}")
     
     def switch_tab(self, tab_id):
         """Alterna entre as abas."""

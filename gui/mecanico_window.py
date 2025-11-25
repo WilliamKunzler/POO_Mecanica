@@ -37,7 +37,8 @@ class MecanicoWindow:
         
         tk.Label(info_frame, text=f"Mecânico: {self.mecanico.nome}", 
                 font=("Segoe UI", 16, "bold"), bg="#E67E22", fg="white").pack(anchor="w")
-        self.info_label = tk.Label(info_frame, text=f"ID: {self.mecanico.id} | Veículos Atendidos: {self.mecanico.qtd_veiculos_atendidos}", 
+        salario = self.mecanico.calcular_salario()
+        self.info_label = tk.Label(info_frame, text=f"ID: {self.mecanico.id} | Veículos Atendidos: {self.mecanico.qtd_veiculos_atendidos} | Salário: R$ {salario:,.2f}", 
                 font=("Segoe UI", 10), bg="#E67E22", fg="white")
         self.info_label.pack(anchor="w")
         
@@ -83,7 +84,8 @@ class MecanicoWindow:
     def atualizar_header(self):
         """Atualiza as informações do header com contadores dinâmicos."""
         qtd_veiculos = self.mecanico.calcular_veiculos_atendidos(self.sistema.ordens_servico)
-        self.info_label.config(text=f"ID: {self.mecanico.id} | Veículos Atendidos: {qtd_veiculos}")
+        salario = self.mecanico.calcular_salario()
+        self.info_label.config(text=f"ID: {self.mecanico.id} | Veículos Atendidos: {qtd_veiculos} | Salário: R$ {salario:,.2f}")
     
     def switch_tab(self, tab_id):
         """Alterna entre as abas."""
