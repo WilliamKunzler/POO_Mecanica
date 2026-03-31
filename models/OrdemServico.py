@@ -1,3 +1,20 @@
+from abc import ABC, abstractmethod
+
+
+class OrcamentoComponent(ABC):
+    @abstractmethod
+    def calcular(self):
+        pass
+
+
+class PecasComponent(OrcamentoComponent):
+    def __init__(self, pecas):
+        self.pecas = pecas
+
+    def calcular(self):
+        return sum(peca.valor_unit for peca in self.pecas)
+
+
 class OrdemServico:
 
     # Próximo ID disponível (auto-incremento simples)
@@ -18,6 +35,7 @@ class OrdemServico:
         self._mecanico = mecanico  # Associação
         self._pecas = []  # Composição - peças fazem parte da OS
         self._veiculo = veiculo  # Associação
+        self._orcamento_components = []
     
     @property                                                   
     def id_os(self):
@@ -73,6 +91,14 @@ class OrdemServico:
         for _ in range(qtd):
             self._pecas.append(peca)
         self.calcular_total()
+
+    def adicionar_componente_orcamento(self, component):
+        self._orcamento_components.append(component)
+        self.calcular_total()
+
+    def limpar_componentes_orcamento(self):
+        self._orcamento_components = []
+        self.calcular_total()
     
     def remover_peca(self, peca):                                         
         """Remove uma peça da ordem de serviço."""
@@ -81,8 +107,10 @@ class OrdemServico:
             self.calcular_total()
     
     def calcular_total(self):
-        total_pecas = sum(peca.valor_unit for peca in self._pecas)
-        self.__valor_total = total_pecas
+        if self._orcamento_components:
+            self.__valor_total = sum(component.calcular() for component in self._orcamento_components)
+        else:
+            self.__valor_total = PecasComponent(self._pecas).calcular()
         return self.__valor_total
     
     def alterar_status(self, novo_status):                                          

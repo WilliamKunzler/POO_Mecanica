@@ -3,14 +3,16 @@ from tkinter import messagebox, ttk
 from gui.cliente_window import ClienteWindow
 from gui.mecanico_window import MecanicoWindow
 from gui.atendente_window import AtendenteWindow
+from repositories.interfaces import UsuarioRepository
 
 
 class LoginWindow:
     """Tela de Login para o Sistema de Mecânica."""
     
-    def __init__(self, root, sistema):
+    def __init__(self, root, usuario_repo: UsuarioRepository):
         self.root = root
-        self.sistema = sistema
+        self.usuario_repo = usuario_repo
+        self.sistema = usuario_repo
         self.root.title("Sistema de Mecânica - Login")
         self.root.state('zoomed')
         self.root.configure(bg="#2C3E50")
@@ -218,7 +220,7 @@ class LoginWindow:
             return
         
         # Verificar se o usuário existe no sistema
-        usuario = self.sistema.buscar_usuario(tipo, nome_usuario)
+        usuario = self.usuario_repo.buscar_usuario(tipo, nome_usuario)
         
         if usuario:
             messagebox.showinfo("Sucesso", f"Bem-vindo(a), {usuario.nome}!")

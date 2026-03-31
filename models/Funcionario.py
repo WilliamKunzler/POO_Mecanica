@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from services.salario_service import SalarioCalculator
 
 class Funcionario(ABC):
     """Classe abstrata para funcionários da mecânica."""
@@ -40,7 +41,7 @@ class Funcionario(ABC):
     
     @abstractmethod                                                     
     def calcular_salario(self):
-        """Método abstrato para calcular o salário do funcionário."""
+        """Método abstrato para calcular o salário positivo do funcionário."""
         pass
 
 
@@ -101,7 +102,11 @@ class Mecanico(Funcionario):
         return False
     
     def calcular_salario(self):
-        return self.salario_base + (self._qtd_veiculos_atendidos * self.bonus_por_veiculo)
+        return SalarioCalculator.calcular_salario_mecanico(
+            self.salario_base,
+            self._qtd_veiculos_atendidos,
+            self.bonus_por_veiculo,
+        )
 
 
 class Atendente(Funcionario):
@@ -402,4 +407,8 @@ class Atendente(Funcionario):
             return False
     
     def calcular_salario(self):
-        return self.salario_base + (self._qtd_clientes * self.comissao)
+        return SalarioCalculator.calcular_salario_atendente(
+            self.salario_base,
+            self._qtd_clientes,
+            self.comissao,
+        )

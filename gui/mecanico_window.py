@@ -1,11 +1,13 @@
 import tkinter as tk
 from tkinter import messagebox, ttk, simpledialog
+from typing import Union
+from repositories.interfaces import OrdemServicoRepository, EstoqueRepository
 
 
 class MecanicoWindow:
     """Interface para Mecânico - Alterar status, requisitar peças, fechar OS."""
     
-    def __init__(self, root, sistema, mecanico, login_root):
+    def __init__(self, root, sistema: Union[OrdemServicoRepository, EstoqueRepository], mecanico, login_root):
         self.root = root
         self.sistema = sistema
         self.mecanico = mecanico

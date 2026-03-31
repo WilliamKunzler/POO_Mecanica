@@ -1,11 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox, ttk, simpledialog
-from datetime import date
-from models.Cliente import Cliente
-from models.Veiculo import Veiculo
-from models.OrdemServico import OrdemServico
-from models.Peca import Peca
-from models.Funcionario import Mecanico
+from services.cliente_service import ClienteService
+from services.veiculo_service import VeiculoService
+from services.peca_service import PecaService
+from services.estoque_service import EstoqueService
+from services.ordem_servico_service import OrdemServicoService
 
 
 class AtendenteWindow:
@@ -16,6 +15,11 @@ class AtendenteWindow:
         self.sistema = sistema
         self.atendente = atendente
         self.login_root = login_root
+        self.cliente_service = ClienteService()
+        self.veiculo_service = VeiculoService()
+        self.peca_service = PecaService()
+        self.estoque_service = EstoqueService()
+        self.ordem_servico_service = OrdemServicoService()
         
         self.root.title(f"Sistema de Mecânica - Atendente: {atendente.nome}")
         self.root.state('zoomed')
@@ -214,7 +218,11 @@ class AtendenteWindow:
                 messagebox.showerror("Erro", "Nome é obrigatório.")
                 return
             
-            novo_cliente = self.atendente.criar_cliente(nome=nome, satisfacao=satisfacao_var.get())
+            novo_cliente = self.cliente_service.criar(
+                nome=nome,
+                satisfacao=satisfacao_var.get(),
+                atendente=self.atendente,
+            )
             self.sistema.clientes.append(novo_cliente)
             messagebox.showinfo("Sucesso", f"Cliente {nome} criado com sucesso!\nID: {novo_cliente.id_cliente}")
             dialog.destroy()
@@ -271,7 +279,7 @@ class AtendenteWindow:
                 messagebox.showerror("Erro", "Nome é obrigatório.")
                 return
             
-            self.atendente.editar_cliente(cliente, nome=nome, satisfacao=satisfacao_var.get())
+            self.cliente_service.editar(cliente, nome=nome, satisfacao=satisfacao_var.get())
             messagebox.showinfo("Sucesso", "Cliente atualizado com sucesso!")
             dialog.destroy()
             self.atualizar_clientes()
@@ -297,8 +305,7 @@ class AtendenteWindow:
         confirmar = messagebox.askyesno("Confirmar Remoção", f"Deseja realmente remover o cliente {cliente.nome}?")
         
         if confirmar:
-            self.atendente.remover_cliente(cliente)
-            self.sistema.clientes.remove(cliente)
+            self.cliente_service.remover(cliente, self.sistema.clientes, atendente=self.atendente)
             messagebox.showinfo("Sucesso", "Cliente removido com sucesso!")
             self.atualizar_clientes()
     
@@ -444,7 +451,7 @@ class AtendenteWindow:
                 if not all([placa, nome, modelo]):
                     raise ValueError("Preencha todos os campos.")
                 
-                novo_veiculo = self.atendente.criar_veiculo(
+                novo_veiculo = self.veiculo_service.criar(
                     placa=placa,
                     nome_veiculo=nome,
                     modelo=modelo,
@@ -508,7 +515,7 @@ class AtendenteWindow:
             modelo = modelo_entry.get().strip()
             
             if nome or modelo:
-                self.atendente.editar_veiculo(veiculo, nome_veiculo=nome, modelo=modelo)
+                self.veiculo_service.editar(veiculo, nome_veiculo=nome, modelo=modelo)
                 messagebox.showinfo("Sucesso", "Veículo atualizado com sucesso!")
                 dialog.destroy()
                 self.atualizar_veiculos()
@@ -542,7 +549,7 @@ class AtendenteWindow:
         confirmar = messagebox.askyesno("Confirmar Remoção", f"Deseja realmente remover o veículo {veiculo.nome_veiculo} ({placa})?")
         
         if confirmar:
-            self.atendente.remover_veiculo(veiculo, cliente_dono)
+            self.veiculo_service.remover(veiculo, cliente_dono)
             messagebox.showinfo("Sucesso", "Veículo removido com sucesso!")
             self.atualizar_veiculos()
     
@@ -670,7 +677,7 @@ class AtendenteWindow:
                 if not nome:
                     raise ValueError("Nome é obrigatório.")
                 
-                nova_peca = self.atendente.criar_peca(nome=nome, descricao=desc, qtd_estoque=qtd, valor_unit=valor)
+                nova_peca = self.peca_service.criar(nome=nome, descricao=desc, qtd_estoque=qtd, valor_unit=valor)
                 self.sistema.pecas.append(nova_peca)
                 
                 messagebox.showinfo("Sucesso", f"Peça {nome} criada com sucesso!\nID: {nova_peca.id}")
@@ -729,7 +736,7 @@ class AtendenteWindow:
                 desc = desc_entry.get().strip()
                 valor = float(valor_entry.get().strip())
                 
-                self.atendente.editar_peca(peca, nome=nome, descricao=desc, valor_unit=valor)
+                self.peca_service.editar(peca, nome=nome, descricao=desc, valor_unit=valor)
                 messagebox.showinfo("Sucesso", "Peça atualizada com sucesso!")
                 dialog.destroy()
                 self.atualizar_pecas()
@@ -757,7 +764,7 @@ class AtendenteWindow:
         qtd = simpledialog.askinteger("Adicionar Estoque", f"Quantidade a adicionar para {peca.nome}:", minvalue=1)
         
         if qtd:
-            self.atendente.adicionar_estoque_peca(peca, qtd)
+            self.estoque_service.adicionar_estoque(peca, qtd)
             messagebox.showinfo("Sucesso", f"{qtd} unidade(s) adicionada(s) ao estoque!")
             self.atualizar_pecas()
     
@@ -926,7 +933,7 @@ class AtendenteWindow:
                 if not descricao:
                     raise ValueError("Descrição é obrigatória.")
                 
-                nova_os = self.atendente.criar_ordem_servico(cliente, veiculo, descricao)
+                nova_os = self.ordem_servico_service.criar(cliente, veiculo, descricao)
                 self.sistema.ordens_servico.append(nova_os)
                 
                 messagebox.showinfo("Sucesso", f"OS #{nova_os.id_os} criada com sucesso!")
@@ -969,7 +976,7 @@ class AtendenteWindow:
                 mecanico = next((m for m in self.sistema.mecanicos if m.id == mec_id), None)
                 
                 if mecanico:
-                    self.atendente.atribuir_mecanico_os(os_obj, mecanico)
+                    self.ordem_servico_service.atribuir_mecanico(os_obj, mecanico)
                     messagebox.showinfo("Sucesso", f"Mecânico {mecanico.nome} atribuído à OS #{os_id}")
                     self.atualizar_os()
                 else:
@@ -990,7 +997,7 @@ class AtendenteWindow:
         
         if os_obj:
             os_obj.alterar_status("Orçamento")
-            valor = self.atendente.gerar_orcamento_os(os_obj)
+            valor = self.ordem_servico_service.gerar_orcamento(os_obj)
             messagebox.showinfo("Orçamento Gerado", f"Orçamento da OS #{os_id}:\nR$ {valor:.2f}")
             self.atualizar_os()
     
